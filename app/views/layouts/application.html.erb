@@ -22,6 +22,12 @@ You can get the source code of this app <a href="https://github.com/tario/ruby_o
 	<%- end -%>
 <%- end -%>	
 
+<br/>
+<br/>
+<br/>
+
+<%= "*"*60 %> <!-- Problem? -->
+
 <%- flash.each do |key, msg| -%>
   <div id="<%= key %>">
     <p style="float:right;"><%= link_to_function 'X', "Effect.Fade('#{key}')" %></p>
