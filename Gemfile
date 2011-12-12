@@ -39,3 +39,5 @@ gem 'rack-openid'
 gem 'open_id_authentication'
 gem 'pry'
 gem 'bundle'
+gem 'pg'
+
