@@ -7,6 +7,9 @@
       end
     end
 
+    def new
+      
+    end
 
     protected
       def password_authentication(name, password)
