@@ -7,11 +7,21 @@
       end
     end
     
+    def welcome
+    end
+    
     def register
     end
     
     def failed
       
+    end
+    
+    def destroy
+      session[:google_signed_in] = false
+      session[:user_id] = nil
+      
+      redirect_to(root_url)
     end
 
     def new
@@ -22,6 +32,7 @@
       def open_id_authentication(args)
         authenticate_with_open_id("https://www.google.com/accounts/o8/id") do |result, identity_url|
           if result.successful?
+            session[:google_signed_in] = true
             @current_user = User.find_by_identity_url(identity_url)
             
             if @current_user
