@@ -28,8 +28,13 @@
               successful_login
             else
               if args[:register_username]
-                @current_user = User.new(:identity_url => identity_url, :username => args[:register_username])
-                successful_login
+                if User.find_by_username(args[:register_username])
+                  failed_login "Cannot register a user named '#{args[:register_username]}', the user already exists in the database"
+                else
+                  @current_user = User.new(:identity_url => identity_url, :username => args[:register_username])
+                  @current_user.save
+                  successful_login
+                end
               else
                 redirect_to '/sessions/register'
               end
