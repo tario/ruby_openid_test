@@ -1,0 +1,11 @@
+<p><b> There is no user associated with the google account used to signin, you must register a new one</b></p>
+  <form action='/sessions/create' method='get'>
+    <p>
+      <label for="name">Username:</label>
+      <%= text_field_tag "register_username" %>
+    </p>
+
+    <p>
+      <%= submit_tag 'Sign in', :disable_with => "Signing in&hellip;" %>
+    </p>
+  </form>
