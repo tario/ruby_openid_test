@@ -3,7 +3,7 @@
       if using_open_id?
         open_id_authentication
       else
-        password_authentication(params[:name], params[:password])
+        failed_login "Sorry, only login with openid are accepted"
       end
     end
 
@@ -11,18 +11,10 @@
     end
 
     protected
-      def password_authentication(name, password)
-        if @current_user = @account.users.authenticate(params[:name], params[:password])
-          successful_login
-        else
-          failed_login "Sorry, that username/password doesn't work"
-        end
-      end
-
       def open_id_authentication
         authenticate_with_open_id do |result, identity_url|
           if result.successful?
-            if @current_user = @account.users.find_by_identity_url(identity_url)
+            if @current_user = User.find_by_identity_url(identity_url)
               successful_login
             else
               failed_login "Sorry, no user by that identity URL exists (#{identity_url})"
