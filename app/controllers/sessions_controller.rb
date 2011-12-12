@@ -8,7 +8,6 @@
     end
 
     def new
-      
     end
 
     protected
@@ -43,7 +42,7 @@
 
       def failed_login(message)
         flash[:error] = message
-        redirect_to(new_session_url)
+        redirect_to('/sessions/new')
       end
   end
   
