@@ -1,4 +1,4 @@
-<p><b> There is no user associated with the google account used to signin, you must register a new one</b></p>
+<p><b> There is no user associated with the google account '<%= @openid_email %>' (<%= @openid_first %> <%= @openid_last %>) used to signin, you must register a new one</b></p>
   <form action='/sessions/create' method='get'>
     <p>
       <label for="name">Username:</label>
