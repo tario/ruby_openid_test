@@ -40,6 +40,7 @@ gem 'open_id_authentication'
 group :development do
   gem 'sqlite3'
   gem 'pry'
+  gem 'mongrel'
 end
 
 gem 'bundle'
