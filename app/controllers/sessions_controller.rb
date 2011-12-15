@@ -11,9 +11,10 @@
     end
     
     def register
-      @openid_email = params["openid_email"]
-      @openid_first = params["openid_first"]
-      @openid_last = params["openid_last"]
+      openid_data = session[:openid_data] || {}
+      @openid_email = openid_data[:email]
+      @openid_first = openid_data[:first]
+      @openid_last = openid_data[:last]
     end
     
     def failed
@@ -23,6 +24,7 @@
     def destroy
       session[:google_signed_in] = false
       session[:user_id] = nil
+      session[:openid] = nil
       
       redirect_to(root_url)
     end
@@ -47,25 +49,24 @@
               successful_login
             else
               if ax_response
-                openid_first = ax_response["http://axschema.org/namePerson/first"].first
-                openid_last = ax_response["http://axschema.org/namePerson/last"].first
                 openid_email = ax_response["http://axschema.org/contact/email"].first
+                session[:openid_data] = { :first => ax_response["http://axschema.org/namePerson/first"].first,
+                                        :last => ax_response["http://axschema.org/namePerson/last"].first,
+                                        :email => openid_email }
+              else
+                openid_email = args[:register_username]
               end 
               
-              if args[:register_username]
-                if User.find_by_username(args[:register_username])
-                  failed_login "Cannot register a user named '#{args[:register_username]}', the user already exists in the database"
+              if openid_email
+                if User.find_by_username(openid_email)
+                  failed_login "Cannot register a user named '#{openid_email}', the user already exists in the database"
                 else
-                  @current_user = User.new(:identity_url => identity_url, :username => args[:register_username])
+                  @current_user = User.new(:identity_url => identity_url, :username => openid_email)
                   @current_user.save
                   successful_login
                 end
               else
-                if ax_response
-                  redirect_to "/sessions/register?openid_first=#{openid_first}&openid_last=#{openid_last}&openid_email=#{openid_email}"
-                else
-                  redirect_to "/sessions/register"
-                end
+                redirect_to "/sessions/register"
               end
             end
           else
