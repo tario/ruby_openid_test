@@ -47,5 +47,6 @@ gem 'bundle'
 
 group :production do
   gem 'pg'
+  gem 'mongrel'
 end
 
